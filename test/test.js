@@ -158,7 +158,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var B = (0, _2.default)(A);
 
-  var C = (0, _2.default)(function (_B) {
+  var C = function (_B) {
     _inherits(C, _B);
 
     function C(name) {
@@ -175,10 +175,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }]);
 
     return C;
-  }(B));
+  }(B);
 
-  var withNew = new C('withNew');
-  var withoutNew = C('withoutNew');
+  var D = (0, _2.default)(C);
+
+  var withNew = new D('withNew');
+  var withoutNew = D('withoutNew');
 
   t.equal(withNew.constructor, C, 'withNew has the correct constructor');
   t.equal(withoutNew.constructor, C, 'withoutNew has the correct constructor');

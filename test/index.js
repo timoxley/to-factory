@@ -97,17 +97,19 @@ test('factory inheritance', t => {
 
   const B = f(A)
 
-  const C = f(class C extends B {
+  class C extends B {
     constructor(name) {
       super(name.toUpperCase())
     }
     test2() {
       return super.test()
     }
-  })
+  }
 
-  const withNew = new C('withNew')
-  const withoutNew = C('withoutNew')
+  const D = f(C)
+
+  const withNew = new D('withNew')
+  const withoutNew = D('withoutNew')
 
   t.equal(withNew.constructor, C, 'withNew has the correct constructor')
   t.equal(withoutNew.constructor, C, 'withoutNew has the correct constructor')
