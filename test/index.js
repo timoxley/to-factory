@@ -45,7 +45,7 @@ test('static properties', t => {
   t.end()
 })
 
-test('inheritance', t => {
+test('direct inheritance', t => {
   const expected = Symbol()
   class A {
     constructor(name) {
@@ -82,3 +82,44 @@ test('inheritance', t => {
   t.equal(withoutNew.test2(), expected, 'withoutNew inherited proto method call')
   t.end()
 })
+
+test('factory inheritance', t => {
+  const expected = Symbol()
+  class A {
+    constructor(name) {
+      this.name = name
+    }
+    test() {
+      return expected
+    }
+  }
+  A.property = expected
+
+  const B = f(A)
+
+  class C extends B {
+    constructor(name) {
+      super(name.toUpperCase())
+    }
+    test2() {
+      return super.test()
+    }
+  }
+
+  const D = f(C)
+
+  const withNew = new D('withNew')
+  const withoutNew = D('withoutNew')
+
+  t.equal(withNew.constructor, C, 'withNew has the correct constructor')
+  t.equal(withoutNew.constructor, C, 'withoutNew has the correct constructor')
+
+  t.equal(withNew.name, 'WITHNEW', 'withNew has instance property')
+  t.equal(withoutNew.name, 'WITHOUTNEW', 'withoutNew has instance property')
+
+  t.equal(withNew.test(), expected, 'withNew inherited proto method call from A')
+  t.equal(withoutNew.test(), expected, 'withoutNew inherited proto method call from A')
+  t.equal(withNew.test2(), expected, 'withNew inherited proto method call from C')
+  t.equal(withoutNew.test2(), expected, 'withoutNew inherited proto method call from C')
+  t.end()
+});
